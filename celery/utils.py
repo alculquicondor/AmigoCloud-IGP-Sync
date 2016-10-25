@@ -1,4 +1,7 @@
 from datetime import datetime
+from collections import OrderedDict
+from hashlib import md5
+import json
 import time
 
 from lxml import etree, html
@@ -54,4 +57,7 @@ def to_amigo_format(earthquake):
         'magnitude_ml': float(earthquake['Magnitud'].split()[0]),
         'depth_km': int(earthquake['Profundidad'].split()[0])
     }
-    return amigo_data
+    json_data = json.dumps(OrderedDict(sorted(amigo_data.items(),
+                                              key=lambda t: t[0])))
+    amigo_id = md5(json_data.encode('utf8')).hexdigest()
+    return amigo_id, amigo_data

@@ -1,5 +1,4 @@
 from datetime import timedelta
-from hashlib import md5
 import json
 
 from amigocloud import AmigoCloud
@@ -24,8 +23,7 @@ app.conf.CELERY_TIMEZONE = 'UTC'
 def amigocloud_sync_earthquakes(page=1):
     change_data = []
     for earthquake in get_earthquakes_data(page):
-        amigo_data = to_amigo_format(earthquake)
-        amigo_id = md5(str(amigo_data).encode()).hexdigest()
+        amigo_id, amigo_data = to_amigo_format(earthquake)
         change_data.append({
             'amigo_id': amigo_id,
             'new': amigo_data
