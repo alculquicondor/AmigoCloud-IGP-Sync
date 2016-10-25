@@ -12,13 +12,20 @@ def get_earthquakes_data(page=1):
         'xjxfun': 'aux',
         'xjxr': int(time.time() * 1000),
         'xjxargs[]': ['N20', 'N%d' % page,
-                      '<xjxobj><e><k>optionMonth0</k><v>S1</v></e><e>'
-                      '<k>optionMonth1</k><v>S2</v></e><e><k>optionMonth2</k>'
-                      '<v>S3</v></e><e><k>optionMonth3</k><v>S4</v></e><e>'
-                      '<k>optionMonth4</k><v>S5</v></e><e><k>optionMonth5</k>'
-                      '<v>S6</v></e><e><k>optionMonth6</k><v>S7</v></e><e><k>'
-                      'optionMonth7</k><v>S8</v></e><e><k>optionMonth8</k>'
-                      '<v>S9</v></e></xjxobj>']
+                      '<xjxobj>'
+                      '<e><k>optionMonth0</k><v>S1</v></e>'
+                      '<e><k>optionMonth1</k><v>S2</v></e>'
+                      '<e><k>optionMonth2</k><v>S3</v></e>'
+                      '<e><k>optionMonth3</k><v>S4</v></e>'
+                      '<e><k>optionMonth4</k><v>S5</v></e>'
+                      '<e><k>optionMonth5</k><v>S6</v></e>'
+                      '<e><k>optionMonth6</k><v>S7</v></e>'
+                      '<e><k>optionMonth7</k><v>S8</v></e>'
+                      '<e><k>optionMonth8</k><v>S9</v></e>'
+                      '<e><k>optionMonth9</k><v>S10</v></e>'
+                      '<e><k>optionMonth10</k><v>S11</v></e>'
+                      '<e><k>optionMonth11</k><v>S12</v></e>'
+                      '</xjxobj>']
     }
 
     response = requests.post(IGP_EQ_URL, data=data)
