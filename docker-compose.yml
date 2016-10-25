@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  rabbitmq:
+      image: rabbitmq:3.6.5
+      expose:
+          - "5672"
+      environment:
+          RABBITMQ_DEFAULT_USER: "amigo"
+          RABBITMQ_DEFAULT_PASS: "IAmTheVeryBestAmigo"
+          RABBITMQ_DEFAULT_VHOST: "earth"
+      hostname: rabbitmq
+      restart: "always"
+
+  celery:
+      image: alculquicondor/earthquakes_celery:latest
+      command: celery -A tasks worker -B -l INFO
+      links:
+          - rabbitmq
+      environment:
+          AMIGOCLOUD_TOKEN: "${AMIGOCLOUD_TOKEN}"
+          BROKER_URL: "amqp://amigo:IAmTheVeryBestAmigo@rabbitmq:5672/earth"
+      volumes:
+          - ./celery:/srv/earthquakes_celery  # REMOVE ON PRODUCTION
+      restart: "always"
