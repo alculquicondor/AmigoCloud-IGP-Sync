@@ -149,8 +149,8 @@ WHERE magnitude_ml > 5 AND datetime > now() - INTERVAL '2 weeks'
 ## Consultas Espaciales con PostGIS
 
 PostGIS es una extensión para PostgreSQL que le añade índices y funciones para
-hacer consultas espaciales. Estas funciones llevan el prefijo `ST_`
-(_Spatial Type_).
+hacer consultas espaciales. [Estas funciones](http://postgis.net/docs/reference.html)
+llevan el prefijo `ST_` (_Spatial Type_).
 
 ### Estableciendo Perímetros
 
