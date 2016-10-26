@@ -18,6 +18,8 @@ poblados vulnerables después de un movimiento telúrico.
 - [Consultando con SQL](#consutando-con-sql)
 - [Consultas Espaciales con PostGIS](#consultas-espaciales-con-postgis)
 
+![Temblores en Perú](img/peru_earthquakes.png)
+
 
 ## Portales de Datos a Utilizar
 
