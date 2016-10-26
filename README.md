@@ -4,19 +4,19 @@ Algunas instituciones gubernamentales peruanas publican datos en sus portales
 de datos abiertos. Sin embargo, los datos muchas veces se encuentran en tablas
 estáticas u otros formatos anticuados que dificultan su procesamiento. En este
 tutorial aprenderemos cómo extraer datos de algunos de estos portales para
-poder subirlos a una base de datos espacial como [PostGIS](postgis.net). Una
-vez allí, podremos hacer una gran variedad de consultas clásicas y/o
+poder subirlos a una base de datos espacial como [PostGIS](http://postgis.net).
+Una vez allí, podremos hacer una gran variedad de consultas clásicas y/o
 espaciales. En este ejemplo, elaboraremos un plan de rescate de centros
 poblados vulnerables después de un movimiento telúrico.
 
 
 ## Outline
 
-- [Portales de Datos a Utilizar](#Portales-de-Datos-a-Utilizar)
-- [Obteniendo Datos de ArcGIS Online](#Obteniendo-Datos-de-ArcGIS-Online)
-- [Sincronizando Datos desde Portales Web](#Sincronizando-Datos-desde-Portales-Web)
-- [Consultando con SQL](#Consutando-con-SQL)
-- [Consultas Espaciales](#Consultas-Espaciales)
+- [Portales de Datos a Utilizar](#portales-de-datos-a-utilizar)
+- [Obteniendo Datos de ArcGIS Online](#obteniendo-datos-de-arcgis-online)
+- [Sincronizando Datos desde Portales Web](#sincronizando-datos-desde-portales-web)
+- [Consultando con SQL](#consutando-con-sql)
+- [Consultas Espaciales con PostGIS](#consultas-espaciales-con-postgis)
 
 
 ## Portales de Datos a Utilizar
@@ -40,7 +40,7 @@ poblados vulnerables después de un movimiento telúrico.
 
 ### GDAL: GeoSpatial Data Abstraction Layer
 
-[GDAL](gdal.org) es una librería que nos permite manipular datos espaciales
+[GDAL](http://gdal.org) es una librería que nos permite manipular datos espaciales
 (vectoriales y raster) de manera homogénea. Soporta una gran cantidad de
 formatos como:
 
@@ -57,10 +57,10 @@ Trae algunos utilitarios como:
 
 ### Extrayendo datos con ogr2ogr
 
-Podemos usar `ogr2ogr` para extraer datos de un layer ArcGIS (en formato 
-GeoJSON) y convertirlos a cualquier otro (Shapefile en el ejemplo).
-ArcGIS Online limita las consultas a 1000 registros, por lo que serán
-necesarias varias consultas hasta obtener todos los datos.
+Podemos usar [`ogr2ogr`](http://www.gdal.org/ogr2ogr.html) para extraer datos
+de un layer ArcGIS (en formato GeoJSON) y convertirlos a cualquier otro
+(Shapefile en el ejemplo). ArcGIS Online limita las consultas a 1000 registros,
+por lo que serán necesarias varias consultas hasta obtener todos los datos.
 
 ```sh
 ogr2ogr -progress -f "ESRI Shapefile" centros_poblados "http://mapas.geoidep.gob.pe/geoidep/rest/services/Sistema_de_Centros_Poblados/MapServer/2/query?where=FID<1000&outfields=*&f=json" OGRGeoJSON
@@ -80,7 +80,7 @@ que reporta el IGP.
 
 En estas situaciones, no hay una estrategia de extracción de datos que funcione
 para todas los casos. Entonces, es necesario programar un _parser_ en cada
-caso, como [este](https://github.com/alculquicondor/AmigoCloud-IGP-Sync/tree/master/celery/utils.py#L13-L43).
+caso, como [este](celery/utils.py#L13-L43).
 Una vez cargados los datos en objetos manipulables (como diccionarios de
 Python), se pueden procesar o exportar como se desee. Generar archivos CSV,
 JSON o GeoJSON son buenas opciones.
@@ -88,8 +88,8 @@ JSON o GeoJSON son buenas opciones.
 En este caso, hemos realizado una tarea programada que sincronice estos datos
 a un proyecto [AmigoCloud](https://www.amigocloud.com). Para ello, hemos usado
 la librería [python-amigocloud](https://pypi.python.org/pypi/amigocloud/) y
-[Celery](celery.org), como puede verse
-[aquí](https://github.com/alculquicondor/AmigoCloud-IGP-Sync/tree/master/celery/tasks.py#L22-L40).
+[Celery](http://www.celeryproject.org), como puede verse
+[aquí](celery/tasks.py#L22-L40).
 Esta tarea Celery se ejecutará cada 5 minutos para mantener los datos
 al día.
 
@@ -102,7 +102,7 @@ proyecto de AmigoCloud, el cual nos proporciona una base de datos PostGIS en la
 nube, con la ventaja adicional que se encarga de generar visualizaciones.
 
 _NOTA_: También puedes usar `ogr2ogr` para cargar los datos a tu [propia
-instancia de PostGIS](documentacion)
+instancia de PostGIS](http://www.gdal.org/drv_pg.html)
 
 ### ¿De qué materiales son las viviendas en centros poblados del Perú?
 
@@ -146,7 +146,7 @@ WHERE magnitude_ml > 5 AND datetime > now() - INTERVAL '2 weeks'
 ```
 
 
-## Consultas Espaciales
+## Consultas Espaciales con PostGIS
 
 PostGIS es una extensión para PostgreSQL que le añade índices y funciones para
 hacer consultas espaciales. Estas funciones llevan el prefijo `ST_`
