@@ -192,6 +192,6 @@ ORDER BY no_noble_per DESC
 ```
 
 
-## Author
+## Autor
 
 [Aldo Culquicondor](https://github.com/alculquicondor)
