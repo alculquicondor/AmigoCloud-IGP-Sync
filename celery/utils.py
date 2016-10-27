@@ -31,7 +31,7 @@ def get_earthquakes_data(page=1):
                       '</xjxobj>']
     }
 
-    response = requests.post(IGP_EQ_URL, data=data)
+    response = requests.post(IGP_EQ_URL, data=data, timeout=15)
     table_str = etree.fromstring(response.content)[0].text[1:]
     table = html.fragment_fromstring(table_str)
     header = [e.text for e in table[0]]
