@@ -60,7 +60,5 @@ def to_amigo_format(earthquake):
         'magnitude_ml': float(earthquake['Magnitud'].split()[0]),
         'depth_km': int(earthquake['Profundidad'].split()[0])
     }
-    json_data = json.dumps(OrderedDict(sorted(amigo_data.items(),
-                                              key=lambda t: t[0])))
-    amigo_id = md5(json_data.encode('utf8')).hexdigest()
+    amigo_id = md5(datetime_iso.encode('utf8')).hexdigest()
     return amigo_id, amigo_data
