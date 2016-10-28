@@ -2,6 +2,7 @@ from datetime import datetime
 from collections import OrderedDict
 from hashlib import md5
 import json
+import pytz
 import time
 
 from lxml import etree, html
@@ -44,10 +45,12 @@ def get_earthquakes_data(page=1):
 
 
 def to_amigo_format(earthquake):
-    datetime_str = '%s %s-0500' % (earthquake['Fecha Local'],
-                                   earthquake['Hora Local'])
-    datetime_iso = datetime.strptime(datetime_str,
-                                     '%d/%m/%Y %H:%M:%S%z').isoformat()
+    datetime_str = '%s %s' % (earthquake['Fecha Local'],
+                              earthquake['Hora Local'])
+    local = pytz.timezone('America/Lima')
+    datetime_local = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M:%S')
+    datetime_iso = (local.localize(datetime_local, is_dst=None)
+                    .astimezone(pytz.utc).isoformat())
     location = 'SRID=4326;POINT(%s %s)' % (earthquake['Longitud'],
                                            earthquake['Latitud'])
     amigo_data = {
